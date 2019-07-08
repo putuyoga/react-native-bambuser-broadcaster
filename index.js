@@ -1,9 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import {
-  requireNativeComponent,
-  View
-} from 'react-native';
+import { requireNativeComponent, View } from 'react-native';
 
 const AUDIO_QUALITY = {
   HIGH: 'audioQualityHigh',
@@ -45,186 +42,191 @@ const propTypes = {
   ...View.propTypes
 };
 
-class RNBambuserBroadcaster extends React.Component {
-
+class RNBambuserBroadcaster extends React.PureComponent {
   constructor(props) {
     super(props);
-    this.broadcasterComponentView = null;
-    this._onCurrentViewerCountUpdate = this._onCurrentViewerCountUpdate.bind(this);
-    this._onTotalViewerCountUpdate = this._onTotalViewerCountUpdate.bind(this);
-    this._onMessageReceived = this._onMessageReceived.bind(this);
-    this._onBroadcastStarted = this._onBroadcastStarted.bind(this);
-    this._onBroadcastStopped = this._onBroadcastStopped.bind(this);
-    this._onBroadcastError = this._onBroadcastError.bind(this);
-    this._onLocalCopySaved = this._onLocalCopySaved.bind(this);
-    this._onBroadcastIdReceived = this._onBroadcastIdReceived.bind(this);
-    this._onUplinkTestComplete = this._onUplinkTestComplete.bind(this);
-    this._onStreamHealthUpdate = this._onStreamHealthUpdate.bind(this);
-    this._onPictureSaved = this._onPictureSaved.bind(this);
-    this._onIncomingTalkbackRequest = this._onIncomingTalkbackRequest.bind(this);
-    this._onTalkbackIdle = this._onTalkbackIdle.bind(this);
-    this._onTalkbackPlaying = this._onTalkbackPlaying.bind(this);
-    this._onTalkbackAccepted = this._onTalkbackAccepted.bind(this);
-    this._onTalkbackNeedsAccept = this._onTalkbackNeedsAccept.bind(this);
-    this._onCameraReady = this._onCameraReady.bind(this);
-    this._onStartBroadcastNotReady = this._onStartBroadcastNotReady.bind(this);
+    this.broadcasterComponentView = React.createRef();
   }
 
-  startBroadcast() {
-    this.broadcasterComponentView.setNativeProps({
+  startBroadcast = () => {
+    console.log('asu dan anjing');
+    console.log(this.broadcasterComponentView.current);
+    if (!this.broadcasterComponentView.current) return;
+    this.broadcasterComponentView.current.setNativeProps({
       startBroadcast: true
     });
-  }
+  };
 
-  stopBroadcast() {
-    this.broadcasterComponentView.setNativeProps({
+  stopBroadcast = () => {
+    if (!this.broadcasterComponentView.current) return;
+    this.broadcasterComponentView.current.setNativeProps({
       stopBroadcast: true
     });
-  }
+  };
 
-  switchCamera() {
-    this.broadcasterComponentView.setNativeProps({
+  switchCamera = () => {
+    if (!this.broadcasterComponentView.current) return;
+    this.broadcasterComponentView.current.setNativeProps({
       switchCamera: true
     });
-  }
+  };
 
-  takePicture() {
-    this.broadcasterComponentView.setNativeProps({
+  takePicture = () => {
+    if (!this.broadcasterComponentView.current) return;
+    this.broadcasterComponentView.current.setNativeProps({
       takePicture: true
     });
-  }
+  };
 
-  startUplinkTest() {
-    this.broadcasterComponentView.setNativeProps({
+  startUplinkTest = () => {
+    if (!this.broadcasterComponentView.current) return;
+    this.broadcasterComponentView.current.setNativeProps({
       startUplinkTest: true
     });
-  }
+  };
 
-  acceptTalkback(talkbackId) {
-    this.broadcasterComponentView.setNativeProps({
+  acceptTalkback = talkbackId => {
+    if (!this.broadcasterComponentView.current) return;
+    this.broadcasterComponentView.current.setNativeProps({
       acceptTalkback: parseInt(talkbackId)
     });
-  }
+  };
 
-  declineTalkback(talkbackId) {
-    this.broadcasterComponentView.setNativeProps({
+  declineTalkback = talkbackId => {
+    if (!this.broadcasterComponentView.current) return;
+    this.broadcasterComponentView.current.setNativeProps({
       declineTalkback: parseInt(talkbackId)
     });
-  }
+  };
 
-  endTalkback() {
-    this.broadcasterComponentView.setNativeProps({
+  endTalkback = () => {
+    if (!this.broadcasterComponentView.current) return;
+    this.broadcasterComponentView.current.setNativeProps({
       endTalkback: true
     });
-  }
+  };
 
-  _onCurrentViewerCountUpdate(event) {
+  _onCurrentViewerCountUpdate = event => {
     if (typeof this.props.onCurrentViewerCountUpdate === 'function') {
       this.props.onCurrentViewerCountUpdate(event.nativeEvent.viewers);
     }
-  }
+  };
 
-  _onTotalViewerCountUpdate(event) {
+  _onTotalViewerCountUpdate = event => {
     if (typeof this.props.onTotalViewerCountUpdate === 'function') {
       this.props.onTotalViewerCountUpdate(event.nativeEvent.viewers);
     }
-  }
+  };
 
-  _onMessageReceived(event) {
+  _onMessageReceived = event => {
     if (typeof this.props.onMessageReceived === 'function') {
       this.props.onMessageReceived(event.nativeEvent.message);
     }
-  }
+  };
 
-  _onBroadcastStarted(event) {
+  _onBroadcastStarted = event => {
     if (typeof this.props.onBroadcastStarted === 'function') {
       this.props.onBroadcastStarted();
     }
-  }
+  };
 
-  _onBroadcastStopped(event) {
+  _onBroadcastStopped = event => {
     if (typeof this.props.onBroadcastStopped === 'function') {
       this.props.onBroadcastStopped();
     }
-  }
+  };
 
-  _onBroadcastError(event) {
+  _onBroadcastError = event => {
     if (typeof this.props.onBroadcastError === 'function') {
-      this.props.onBroadcastError(event.nativeEvent.errorCode, event.nativeEvent.errorMessage);
+      this.props.onBroadcastError(
+        event.nativeEvent.errorCode,
+        event.nativeEvent.errorMessage
+      );
     }
-  }
+  };
 
-  _onLocalCopySaved(event) {
+  _onLocalCopySaved = event => {
     if (typeof this.props.onLocalCopySaved === 'function') {
       this.props.onLocalCopySaved(event.nativeEvent.filePath);
     }
-  }
+  };
 
-  _onBroadcastIdReceived(event) {
+  _onBroadcastIdReceived = event => {
     if (typeof this.props.onBroadcastIdReceived === 'function') {
       this.props.onBroadcastIdReceived(event.nativeEvent.broadcastId);
     }
-  }
+  };
 
-  _onUplinkTestComplete(event) {
+  _onUplinkTestComplete = event => {
     if (typeof this.props.onUplinkTestComplete === 'function') {
-      this.props.onUplinkTestComplete(event.nativeEvent.speed, event.nativeEvent.recommendation);
+      this.props.onUplinkTestComplete(
+        event.nativeEvent.speed,
+        event.nativeEvent.recommendation
+      );
     }
-  }
+  };
 
-  _onStreamHealthUpdate(event) {
+  _onStreamHealthUpdate = event => {
     if (typeof this.props.onStreamHealthUpdate === 'function') {
       this.props.onStreamHealthUpdate(event.nativeEvent.health);
     }
-  }
+  };
 
-  _onPictureSaved(event) {
+  _onPictureSaved = event => {
     if (typeof this.props.onPictureSaved === 'function') {
       this.props.onPictureSaved(event.nativeEvent.filePath);
     }
-  }
+  };
 
-  _onIncomingTalkbackRequest(event) {
+  _onIncomingTalkbackRequest = event => {
     if (typeof this.props.onIncomingTalkbackRequest === 'function') {
-      this.props.onIncomingTalkbackRequest(event.nativeEvent.request, event.nativeEvent.caller, event.nativeEvent.talkbackId);
+      this.props.onIncomingTalkbackRequest(
+        event.nativeEvent.request,
+        event.nativeEvent.caller,
+        event.nativeEvent.talkbackId
+      );
     }
-  }
+  };
 
-  _onTalkbackIdle() {
+  _onTalkbackIdle = () => {
     if (typeof this.props.onTalkbackIdle === 'function') {
       this.props.onTalkbackIdle();
     }
-  }
+  };
 
-  _onTalkbackPlaying() {
+  _onTalkbackPlaying = () => {
     if (typeof this.props.onTalkbackPlaying === 'function') {
       this.props.onTalkbackPlaying();
     }
-  }
+  };
 
-  _onTalkbackAccepted() {
+  _onTalkbackAccepted = () => {
     if (typeof this.props.onTalkbackAccepted === 'function') {
       this.props.onTalkbackAccepted();
     }
-  }
+  };
 
-  _onTalkbackNeedsAccept() {
+  _onTalkbackNeedsAccept = () => {
     if (typeof this.props.onTalkbackNeedsAccept === 'function') {
       this.props.onTalkbackNeedsAccept();
     }
-  }
+  };
 
-  _onCameraReady(event) {
+  _onCameraReady = event => {
     if (typeof this.props.onCameraReady === 'function') {
-      this.props.onCameraReady(event.nativeEvent.hasZoom, event.nativeEvent.hasTorch, event.nativeEvent.canSwitchCamera);
+      this.props.onCameraReady(
+        event.nativeEvent.hasZoom,
+        event.nativeEvent.hasTorch,
+        event.nativeEvent.canSwitchCamera
+      );
     }
-  }
+  };
 
-  _onStartBroadcastNotReady() {
+  _onStartBroadcastNotReady = () => {
     if (typeof this.props.onStartBroadcastNotReady === 'function') {
       this.props.onStartBroadcastNotReady();
     }
-  }
+  };
 
   render() {
     var modifiedProps = { ...this.props };
@@ -233,9 +235,7 @@ class RNBambuserBroadcaster extends React.Component {
     }
     return (
       <BambuserBroadcasterView
-        ref={ref => {
-          this.broadcasterComponentView = ref;
-        }}
+        ref={this.broadcasterComponentView}
         {...modifiedProps}
         onCurrentViewerCountUpdate={this._onCurrentViewerCountUpdate}
         onTotalViewerCountUpdate={this._onTotalViewerCountUpdate}
@@ -254,7 +254,8 @@ class RNBambuserBroadcaster extends React.Component {
         onTalkbackAccepted={this._onTalkbackAccepted}
         onTalkbackNeedsAccept={this._onTalkbackNeedsAccept}
         onCameraReady={this._onCameraReady}
-        onStartBroadcastNotReady={this._onStartBroadcastNotReady} />
+        onStartBroadcastNotReady={this._onStartBroadcastNotReady}
+      />
     );
   }
 }
@@ -262,17 +263,21 @@ class RNBambuserBroadcaster extends React.Component {
 RNBambuserBroadcaster.propTypes = propTypes;
 RNBambuserBroadcaster.AUDIO_QUALITY = AUDIO_QUALITY;
 
-const BambuserBroadcasterView = requireNativeComponent('BambuserBroadcasterView', RNBambuserBroadcaster, {
-  nativeOnly: {
-    startBroadcast: PropTypes.bool,
-    stopBroadcast: PropTypes.bool,
-    startUplinkTest: PropTypes.bool,
-    takePicture: PropTypes.bool,
-    acceptTalkback: PropTypes.number,
-    declineTalkback: PropTypes.number,
-    endTalkback: PropTypes.bool,
-    switchCamera: PropTypes.bool
+const BambuserBroadcasterView = requireNativeComponent(
+  'BambuserBroadcasterView',
+  RNBambuserBroadcaster,
+  {
+    nativeOnly: {
+      startBroadcast: PropTypes.bool,
+      stopBroadcast: PropTypes.bool,
+      startUplinkTest: PropTypes.bool,
+      takePicture: PropTypes.bool,
+      acceptTalkback: PropTypes.number,
+      declineTalkback: PropTypes.number,
+      endTalkback: PropTypes.bool,
+      switchCamera: PropTypes.bool
+    }
   }
-});
+);
 
 module.exports = RNBambuserBroadcaster;
